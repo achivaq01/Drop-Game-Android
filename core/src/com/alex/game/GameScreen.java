@@ -19,6 +19,7 @@ public class GameScreen implements Screen {
     final MyGdxGame game;
     Texture dropImage;
     Texture bucketImage;
+    Texture background;
     Sound dropSound;
     Music rainMusic;
     OrthographicCamera camera;
@@ -30,6 +31,7 @@ public class GameScreen implements Screen {
     public GameScreen(final MyGdxGame game) {
         this.game = game;
 
+        background = new Texture(Gdx.files.internal("background.png"));
         dropImage = new Texture(Gdx.files.internal("drop.png"));
         bucketImage = new Texture(Gdx.files.internal("bucket.png"));
 
@@ -69,6 +71,7 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
+        game.batch.draw(background, 0, 0);
         game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
         game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
         for (Rectangle raindrop : raindrops) {
@@ -101,6 +104,11 @@ public class GameScreen implements Screen {
                 dropsGathered++;
                 dropSound.play();
                 iter.remove();
+            }
+
+            if (raindrop.y <= 0) {
+                game.setScreen(new GameOverScreen(game, dropsGathered));
+                dispose();
             }
         }
     }
