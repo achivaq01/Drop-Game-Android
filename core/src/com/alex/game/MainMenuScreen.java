@@ -3,17 +3,21 @@ package com.alex.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainMenuScreen implements Screen {
 
     final MyGdxGame game;
     OrthographicCamera camera;
+    Texture background;
+
     public MainMenuScreen(MyGdxGame myGdxGame) {
         this.game = myGdxGame;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 400);
+        background = new Texture(Gdx.files.internal("game_over.png"));
     }
 
     @Override
@@ -29,6 +33,7 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
+        game.batch.draw(background, 0, 0);
         game.font.draw(game.batch, "Welcome to Drop!!! ", 100, 150);
         game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
         game.batch.end();
